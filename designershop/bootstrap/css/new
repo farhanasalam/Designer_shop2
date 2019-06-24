@@ -1,0 +1,15 @@
+.mn{
+width: 100%;
+margin-bottom: 15px;
+height: 45px;
+border: 1px solid #e5e5e5;
+font-size: 16px;
+border-radius: 2px;
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+-webkit-box-align: center;
+-ms-flex-align: center;
+align-items: center;
+color: #2a303b;
+}

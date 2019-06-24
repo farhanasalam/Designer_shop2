@@ -1,0 +1,54 @@
+<?php
+include 'db.php';
+include 'db1.php';
+$db = new DbConnection;
+session_start();
+if (!(isset($_SESSION['loginid']))) {
+    header('location:../../index.php');
+}
+$id = $_SESSION['loginid'];
+
+if (isset($_POST['submit'])) {
+
+    $productname = $_POST['productname'];
+    $producttype = $_POST['producttype'];
+    $productdescription = $_POST['productdescription'];
+
+    $size= $_POST['size'];
+    $color= $_POST['color'];
+    $quantity= $_POST['quantity'];
+    $price = $_POST['price'];
+    
+    $file_name1 = $_FILES['image1']['name'];
+    $file_tmp1 = $_FILES['image1']['tmp_name'];
+    move_uploaded_file($file_tmp1,"imgs/".$file_name1);
+         
+    $file_name2 = $_FILES['image2']['name'];
+    $file_tmp2 = $_FILES['image2']['tmp_name'];
+    move_uploaded_file($file_tmp2,"imgs/".$file_name2);
+         
+    $file_name3 = $_FILES['image3']['name'];
+    $file_tmp3 = $_FILES['image3']['tmp_name'];
+    move_uploaded_file($file_tmp3,"imgs/".$file_name3);
+         
+         
+    $sql11 = "INSERT INTO `tbl_image`(`image1`,`image2`, `image3`,`status`) VALUES ('$file_name1','$file_name2','$file_name3',1)";
+    $result11 = mysqli_query($con, $sql11) or die(mysqli_error($con));
+
+  $imageid = "SELECT `imageid` FROM `tbl_image` WHERE `image1`='$file_name1' and `image2`='$file_name2' and `image3`='$file_name3'";
+   $result22 = mysqli_query($con, $imageid);
+   while ($row = mysqli_fetch_array($result22)) {
+    $b = $row["imageid"];
+    $sql1 = "INSERT INTO `tbl_addproduct`(`typeid`, `imageid`, `sizeid`,`colorid`,"
+            . "`productname`,`productdescription`,`quantity`,`price`) "
+            . "VALUES ('$producttype','$b','$size','$color','$productname','$productdescription','$quantity',"
+            . "'$price')";
+    $result1 = mysqli_query($con, $sql1) or die(mysqli_error($con));
+   }
+    if ($result1) {
+       echo"<script> alert(' Successful')
+						 window.location.href = 'staffhome.php';</script>";
+       
+    }  
+}
+?>
